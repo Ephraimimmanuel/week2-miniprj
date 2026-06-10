@@ -1,0 +1,43 @@
+pipeline {
+
+    agent any
+
+    environment {
+        IMAGE_NAME = "ephraimimmanuel/week2-demo"
+    }
+
+    stages {
+
+        stage('Clone') {
+            steps {
+                git 'https://github.com/Ephraimimmanuel/week2-miniprj.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t %IMAGE_NAME% .'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )
+                ]) {
+
+                    bat '''
+                    docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+                    docker tag %IMAGE_NAME% %IMAGE_NAME%:latest
+                    docker push %IMAGE_NAME%:latest
+                    '''
+                }
+            }
+        }
+
+    }
+}
