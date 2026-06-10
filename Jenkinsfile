@@ -9,10 +9,11 @@ pipeline {
     stages {
 
         stage('Clone') {
-            steps {
-                git 'https://github.com/Ephraimimmanuel/week2-miniprj.git'
-            }
-        }
+    steps {
+        git branch: 'main',
+            url: 'https://github.com/Ephraimimmanuel/week2-miniprj.git'
+    }
+}
 
         stage('Build Docker Image') {
             steps {
