@@ -39,25 +39,6 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to EC2') {
-
-    steps {
-
-        sshagent(['ec2-ssh']) {
-
-            bat '''
-            ssh -o StrictHostKeyChecking=no ubuntu@EC2_PUBLIC_IP "
-            docker pull yourdockerhubusername/flask-demo:latest &&
-            docker stop flask-demo || true &&
-            docker rm flask-demo || true &&
-            docker run -d --name flask-demo -p 5000:5000 yourdockerhubusername/flask-demo:latest
-            "
-            '''
-        }
-
-    }
-
-}
 
     }
 }
