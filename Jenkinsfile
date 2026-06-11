@@ -41,16 +41,17 @@ pipeline {
         }
         stage('Deploy to EC2') {
     steps {
-        bat '''
-        ssh -o StrictHostKeyChecking=no -i "C:/sshkeys/week2-miniprj.pem" ubuntu@13.203.79.0 "
-            docker pull ephraimimmanuel/week2-demo:latest &&
-            docker stop week2-demo || true &&
-            docker rm week2-demo || true &&
-            docker run -d --name week2-demo -p 5000:5000 ephraimimmanuel/week2-demo:latest
-        "
-        '''
+        sshagent(['ec2-ssh']) {
+            bat '''
+            ssh -o StrictHostKeyChecking=no ubuntu@65.0.5.223 "
+                docker pull ephraimimmanuel/week2-demo:latest &&
+                docker stop week2-demo || true &&
+                docker rm week2-demo || true &&
+                docker run -d --name week2-demo -p 5000:5000 ephraimimmanuel/week2-demo:latest
+            "
+            '''
+        }
     }
 }
-
     }
 }
