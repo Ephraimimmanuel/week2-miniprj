@@ -41,16 +41,14 @@ pipeline {
         }
         stage('Deploy to EC2') {
     steps {
-        sshagent(['ec2-ssh']) {
-            bat '''
-            ssh -o StrictHostKeyChecking=no ubuntu@65.0.5.223 "
-                docker pull ephraimimmanuel/week2-demo:latest &&
-                docker stop week2-demo || true &&
-                docker rm week2-demo || true &&
-                docker run -d --name week2-demo -p 5000:5000 ephraimimmanuel/week2-demo:latest
-            "
-            '''
-        }
+        bat '''
+        ssh -o StrictHostKeyChecking=no -i "C:/sshkeys/ci-cd-final-one.pem" ubuntu@65.0.5.223 "
+            sudo docker pull ephraimimmanuel/week2-demo:latest &&
+            sudo docker stop week2-demo || true &&
+            sudo docker rm week2-demo || true &&
+            sudo docker run -d --name week2-demo -p 5000:5000 ephraimimmanuel/week2-demo:latest
+        "
+        '''
     }
 }
     }
