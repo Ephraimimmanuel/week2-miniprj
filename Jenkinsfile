@@ -42,7 +42,7 @@ pipeline {
         stage('Deploy to EC2') {
     steps {
         bat '''
-        ssh -o StrictHostKeyChecking=no -i "C:/Users/ephra/Downloads/week2-miniprj.pem" ubuntu@13.203.79.0 "
+        ssh -o StrictHostKeyChecking=no -i "C:/jenkins/week2-miniprj.pem" ubuntu@13.203.79.0 "
             docker pull ephraimimmanuel/week2-demo:latest &&
             docker stop week2-demo || true &&
             docker rm week2-demo || true &&
